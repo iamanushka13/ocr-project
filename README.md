@@ -6,12 +6,12 @@ Optical Character Recognition (OCR) tool designed to extract text from images. T
 * **Image Preprocessing:** Includes built-in filters (grayscale, thresholding, noise reduction) to improve OCR accuracy on low-quality images.
 * **Lightweight & Fast:** Optimized for quick inference and low resource consumption.
 
-## 🛠️ Technologies Used
+## Technologies Used
 * **Python 3.x**
 * **Tesseract OCR**
 * **OpenCV** (for image preprocessing)
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository:**
    ```bash
