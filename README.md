@@ -15,5 +15,5 @@ Optical Character Recognition (OCR) tool designed to extract text from images. T
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/](https://github.com/)[YourUsername]/DocuParse-OCR.git
-   cd DocuParse-OCR
+   git clone [https://github.com/](https://github.com/iamanushka13/ocr-project.git)
+   cd ocr-web-app
