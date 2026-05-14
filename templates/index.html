@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Text Scanner</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-gradient-1: #c7d2fe;
+            --bg-gradient-2: #fbcfe8;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 
+                        0 1px 3px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Custom File Upload Styling */
+        .file-upload-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .file-upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 40px 20px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-upload-box:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .file-upload-icon {
+            font-size: 40px;
+            line-height: 1;
+        }
+
+        .file-upload-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .file-upload-box input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Submit Button */
+        button[type="submit"] {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        button[type="submit"]:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.3);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* Output Sections */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: left;
+            margin: 30px 0 15px 0;
+            color: var(--text-dark);
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .output-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #334155;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            overflow-x: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            .title {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                    <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                    <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                    <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                    <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                    <rect x="7" y="7" width="10" height="10" rx="1"></rect>
+                </svg>
+                OCR Text Scanner
+            </div>
+            <div class="subtitle">Upload an image and instantly extract the text</div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="file-upload-wrapper">
+                <div class="file-upload-box" id="drop-zone">
+                    <span class="file-upload-icon">📸</span>
+                    <span class="file-upload-text" id="file-name">Click to browse or drag image here</span>
+                    <input type="file" name="image" id="file-input" accept="image/*" required>
+                </div>
+            </div>
+            <button type="submit">Extract Text ✨</button>
+        </form>
+
+        {% if image_path %}
+            <div class="section-title">Uploaded Image</div>
+            <img src="{{ image_path }}" class="image-preview" alt="Uploaded Document">
+        {% endif %}
+
+        {% if extracted_text %}
+            <div class="section-title">Extracted Text</div>
+            <div class="output-box">{{ extracted_text }}</div>
+        {% endif %}
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+        const dropZone = document.getElementById('drop-zone');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.textContent = this.files[0].name;
+                fileNameDisplay.style.color = '#4f46e5'; 
+            } else {
+                fileNameDisplay.textContent = 'Click to browse or drag image here';
+                fileNameDisplay.style.color = '';
+            }
+        });
+    </script>
+
+</body>
+</html>
